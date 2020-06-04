@@ -54,8 +54,10 @@ export default {
   methods: {
     onSubmit () {
       this.$post('/api/user/query', this.form)
-        .then(response => {
-          if (response.status == 'SUCCESS') {
+        .then(res => {
+          if (res.status == 'SUCCESS') {
+            //设置userName到localStorage中
+            localStorage.setItem('userName', res.data.userName)
             router.push({ path: '/home', querry: { redirect: router.currentRoute.fullPath } })
           } else {
             router.push({ path: '/page404' })

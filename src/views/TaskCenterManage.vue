@@ -6,7 +6,7 @@
       <el-form :model="form"
                ref="form"
                label-width="100px">
-        <div style="text-align: left"><label>任务中心:</label></div>
+        <div style="text-align: left"><label>我的任务:</label></div>
         <el-row :gutter="20">
           <el-col :span="6">
             <el-form-item label="任务号:">
@@ -17,19 +17,16 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="任务所有人:">
-             <el-select v-model="form.assignee"
-                     style="width:100%"
-                     placeholder="请输入任务人">
-                  <el-option label="yuandechun"
-                            value="yuandechun"></el-option>
-                  <el-option label="lixiong"
-                            value="lixiong"></el-option>
-                  <el-option label="liulei"
-                            value="liulei"></el-option>
-                  <el-option label="lizhankui"
-                            value="lizhankui"></el-option>
-            </el-select>
+            <el-form-item label="任务类型:">
+              <el-select v-model="form.taskType"
+                         style="width:100%"
+                         placeholder="请输入任务人">
+                <el-option v-for="item in taskTypeOptions"
+                           :key="item.value"
+                           :label="item.label"
+                           :value="item.value">
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
 
@@ -55,7 +52,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-         <el-button type="primary"
+        <el-button type="primary"
                    round
                    @click="handleQuery()">查询结果</el-button>
         <el-button type="primary"
@@ -91,12 +88,12 @@
                          label="任务主题"
                          width="220">
         </el-table-column>
-         <el-table-column fixed
+        <el-table-column fixed
                          prop="systemName"
                          label="系统名称"
                          width="100">
         </el-table-column>
-         <el-table-column fixed
+        <el-table-column fixed
                          prop="assignee"
                          label="任务所有人"
                          width="120">
@@ -168,14 +165,11 @@
           <el-select v-model="editForm.taskType"
                      style="width:100%"
                      placeholder="请选择任务类型">
-            <el-option label="Request"
-                       value="Request"></el-option>
-            <el-option label="Change Request"
-                       value="CR"></el-option>
-            <el-option label="Enhancement"
-                       value="Enhancement"></el-option>
-            <el-option label="Defect"
-                       value="Defect"></el-option>
+            <el-option v-for="item in taskTypeOptions"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="任务主题:"
@@ -185,9 +179,9 @@
                     placeholder="请输入任务主题"
                     auto-complete="off"></el-input>
         </el-form-item>
-         <el-form-item label="任务内容:"
+        <el-form-item label="任务内容:"
                       :label-width="formLabelWidth">
-         <el-input type="textarea"
+          <el-input type="textarea"
                     :rows="8"
                     v-model="editForm.taskContent"
                     placeholder="请输入任务内容"
@@ -198,36 +192,28 @@
           <el-select v-model="editForm.systemName"
                      style="width:100%"
                      placeholder="请选择系统名称">
-            <el-option label="Seamless"
-                       value="Seamless"></el-option>
-            <el-option label="Saas"
-                       value="Saas"></el-option>
-            <el-option label="Pa Web"
-                       value="PaWeb"></el-option>
-            <el-option label="CIRC PAI"
-                       value="CIRC PAI"></el-option>
-            <el-option label="AML"
-                       value="AML"></el-option>
+            <el-option v-for="item in systemNameOptions"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
+            </el-option>
           </el-select>
         </el-form-item>
-         <el-form-item label="任务所有人:"
+        <el-form-item label="任务所有人:"
                       :label-width="formLabelWidth">
-             <el-select v-model="editForm.assignee"
+          <el-select v-model="editForm.assignee"
                      style="width:100%"
                      placeholder="请输入任务人">
-                  <el-option label="yuandechun"
-                            value="yuandechun"></el-option>
-                  <el-option label="lixiong"
-                            value="lixiong"></el-option>
-                  <el-option label="liulei"
-                            value="liulei"></el-option>
-                  <el-option label="lizhankui"
-                            value="lizhankui"></el-option>
-            </el-select>
+            <el-option v-for="item in assigneeOptions"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="预估工时(h):"
                       :label-width="formLabelWidth">
-           <el-input type="text"
+          <el-input type="text"
                     v-model="editForm.estimatedEffort"
                     placeholder="请输入预估工时"
                     auto-complete="off"
@@ -245,16 +231,16 @@
         <el-form-item label="任务状态:"
                       :label-width="formLabelWidth"
                       :required="true">
-                <el-select v-model="editForm.status"
-                         filterable
-                         style="width:100%"
-                         placeholder="请选择状态">
-                <el-option v-for="item in statusOptions"
-                           :key="item.value"
-                           :label="item.label"
-                           :value="item.value">
-                </el-option>
-                </el-select>
+          <el-select v-model="editForm.status"
+                     filterable
+                     style="width:100%"
+                     placeholder="请选择状态">
+            <el-option v-for="item in statusOptions"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
 
       </el-form>
@@ -278,6 +264,7 @@ export default {
       messages: [],
       form: {
         taskNo: '',
+        taskType: '',
         assignee: '',
         status: '',
         submissionDate: ''
@@ -289,6 +276,7 @@ export default {
       pageSize: 10, // 每页的数据条数
       tableData: [],
 
+      //任务状态选项
       statusOptions: [{
         value: 'NotStart',
         label: 'NotStart'
@@ -305,6 +293,61 @@ export default {
         value: 'ReOpen',
         label: 'ReOpen'
       }],
+
+      //assignee人员选项信息
+      assigneeOptions: [
+        {
+          value: 'yuandechun',
+          label: 'yuandechun'
+        }, {
+          value: 'lixiong',
+          label: 'lixiong'
+        }, {
+          value: 'lizhankui',
+          label: 'lizhankui'
+        }, {
+          value: 'liulei',
+          label: 'liulei'
+        }, {
+          value: 'fanjianbo',
+          label: 'fanjianbo'
+        }],
+
+      //systemName选项信息
+      systemNameOptions: [
+        {
+          value: 'Seamless',
+          label: 'Seamless'
+        }, {
+          value: 'PaWeb',
+          label: 'PaWeb'
+        }, {
+          value: 'CIRC PAI',
+          label: 'CIRC PAI'
+        }, {
+          value: 'B2B',
+          label: 'B2B'
+        }, {
+          value: 'eCashman',
+          label: 'eCashman'
+        }],
+
+      //taskType选项信息 
+      taskTypeOptions: [
+        {
+          value: 'Request',
+          label: 'Request'
+        }, {
+          value: 'CR',
+          label: 'Change Request'
+        }, {
+          value: 'Enhancement',
+          label: 'Enhancement'
+        }, {
+          value: 'Defect',
+          label: 'Defect'
+        }],
+
 
       /***编辑框 begin */
       dialogFormVisible: false,
@@ -323,7 +366,7 @@ export default {
 
     }
   },
-  
+
   // 页面初始化数据
   mounted: function () {
     this.handleQuery();
@@ -342,6 +385,7 @@ export default {
 
     // 查询
     handleQuery () {
+      this.form.assignee = localStorage.getItem('userName');
       this.$post('/api/task/query/', this.form)
         .then(res => {
           if (res.status == 'SUCCESS') {
@@ -354,7 +398,7 @@ export default {
     // 重置查询
     handleReset () {
       this.form.taskNo = '';
-      this.form.assignee = '';
+      this.form.taskType = '';
       this.form.status = '';
       this.form.submissionDate = ''
     },

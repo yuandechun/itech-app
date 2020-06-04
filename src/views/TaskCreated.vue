@@ -1,7 +1,7 @@
 <template>
   <div style="border: 1px solid #e6e6e6;">
     <div class="task-created-div-style">
-        <div style="margin-bottom:5px;"><label>创建任务</label></div>
+      <div style="margin-bottom:5px;"><label>创建任务</label></div>
       <el-form :model="form">
         <el-form-item label="任务标题:"
                       :label-width="formLabelWidth">
@@ -23,14 +23,11 @@
           <el-select v-model="form.taskType"
                      style="width:100%"
                      placeholder="请选择任务类型">
-            <el-option label="Request"
-                       value="Request"></el-option>
-            <el-option label="Change Request"
-                       value="CR"></el-option>
-            <el-option label="Enhancement"
-                       value="Enhancement"></el-option>
-            <el-option label="Defect"
-                       value="Defect"></el-option>
+            <el-option v-for="item in taskTypeOptions"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="系统名称:"
@@ -38,16 +35,11 @@
           <el-select v-model="form.systemName"
                      style="width:100%"
                      placeholder="请选择系统名称">
-            <el-option label="Seamless"
-                       value="Seamless"></el-option>
-            <el-option label="Saas"
-                       value="Saas"></el-option>
-            <el-option label="Pa Web"
-                       value="PaWeb"></el-option>
-            <el-option label="CIRC PAI"
-                       value="CIRC PAI"></el-option>
-            <el-option label="AML"
-                       value="AML"></el-option>
+            <el-option v-for="item in systemNameOptions"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="预估工时(h):"
@@ -64,14 +56,11 @@
           <el-select v-model="form.assignee"
                      style="width:100%"
                      placeholder="请输入任务人">
-            <el-option label="yuandechun"
-                       value="yuandechun"></el-option>
-            <el-option label="lixiong"
-                       value="lixiong"></el-option>
-            <el-option label="liulei"
-                       value="liulei"></el-option>
-            <el-option label="lizhankui"
-                       value="lizhankui"></el-option>
+            <el-option v-for="item in assigneeOptions"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
+            </el-option>
           </el-select>
         </el-form-item>
 
@@ -98,18 +87,76 @@ export default {
       form: {
         taskSubject: '',
         taskContent: '',
-        taskType:'Request',
+        taskType: 'Request',
         systemName: 'Seamless',
         estimatedEffort: 0,
         assignee: '',
       },
       formLabelWidth: '100px',
+
+      //assignee人员选项信息
+      assigneeOptions: [
+        {
+          value: 'yuandechun',
+          label: 'yuandechun'
+        }, {
+          value: 'lixiong',
+          label: 'lixiong'
+        }, {
+          value: 'lizhankui',
+          label: 'lizhankui'
+        }, {
+          value: 'liulei',
+          label: 'liulei'
+        }, {
+          value: 'fanjianbo',
+          label: 'fanjianbo'
+        }],
+
+      //systemName选项信息
+      systemNameOptions: [
+        {
+          value: 'Seamless',
+          label: 'Seamless'
+        }, {
+          value: 'PaWeb',
+          label: 'PaWeb'
+        }, {
+          value: 'Circ Pai',
+          label: 'Circ Pai'
+        }, {
+          value: 'B2B',
+          label: 'B2B'
+        }, {
+          value: 'eCashman',
+          label: 'eCashman'
+        }],
+
+      //taskType选项信息 
+      taskTypeOptions: [
+        {
+          value: 'Request',
+          label: 'Request'
+        }, {
+          value: 'CR',
+          label: 'Change Request'
+        }, {
+          value: 'Enhancement',
+          label: 'Enhancement'
+        }, {
+          value: 'Defect',
+          label: 'Defect'
+        }],
+
     }
   },
+
+
+
   methods: {
     // 新建任务
-    handleSubmit() {
-       this.$post('/api/task/save', this.form)
+    handleSubmit () {
+      this.$post('/api/task/save', this.form)
         .then(res => {
           if (res.status == 'SUCCESS') {
             this.handleReset();
@@ -119,7 +166,7 @@ export default {
     },
 
     // 重置内容
-    handleReset(){
+    handleReset () {
       this.form.taskSubject = '';
       this.form.taskContent = '';
       this.form.taskType = '';

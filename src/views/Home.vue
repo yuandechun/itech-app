@@ -1,32 +1,41 @@
 <template>
   <div>
     <!--查询框begin-->
-    <div class="div-style" style="height: 200px;">
-      <el-form :model="form" ref="form" label-width="100px">
-        <div style="text-align: left"><label>工时查询:</label></div>
+    <div class="div-style"
+         style="height: 200px;">
+      <el-form :model="form"
+               ref="form"
+               label-width="100px">
+        <div style="text-align: left"><label>任务中心:</label></div>
         <el-row :gutter="20">
-          <el-col :span="6">
-            <el-form-item label="用户名:">
-              <el-input type="text"
-                        prefix-icon="el-icon-user"
-                        v-model="form.userName"
-                        placeholder="请输入用户名"></el-input>
-            </el-form-item>
-          </el-col>
           <el-col :span="6">
             <el-form-item label="任务号:">
               <el-input type="text"
-                        prefix-icon="el-icon-user"
+                        prefix-icon=""
                         v-model="form.taskNo"
                         placeholder="请输入任务号"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
+            <el-form-item label="任务所有人:">
+              <el-select v-model="form.assignee"
+                         style="width:100%"
+                         placeholder="请输入任务人">
+                <el-option v-for="item in assigneeOptions"
+                           :key="item.value"
+                           :label="item.label"
+                           :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="6">
             <el-form-item label="状态:">
               <el-select v-model="form.status"
                          filterable
                          placeholder="请选择">
-                <el-option v-for="item in options"
+                <el-option v-for="item in statusOptions"
                            :key="item.value"
                            :label="item.label"
                            :value="item.value">
@@ -35,57 +44,69 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="日期:">
-            <el-date-picker
-                        v-model="form.workDate"
-                        type="date"
-                        placeholder="选择日期">
-           </el-date-picker>
-          </el-form-item>
+            <el-form-item label="创建日期:">
+              <el-date-picker v-model="form.submissionDate"
+                              type="date"
+                              placeholder="选择日期">
+              </el-date-picker>
+            </el-form-item>
           </el-col>
         </el-row>
-        <el-button type="primary" round>查询结果</el-button>
-        <el-button type="primary" round>重置查询</el-button>
+        <el-button type="primary"
+                   round
+                   @click="handleQuery()">查询结果</el-button>
+        <el-button type="primary"
+                   round
+                   @click="handleReset()">重置查询</el-button>
       </el-form>
     </div>
     <!--查询框begin-->
 
-
     <!--显示内容 begin-->
     <div class="div-style">
-        <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+      <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
                 height="310"
                 border
                 style="width: 100%">
         <el-table-column fixed
-                         prop="workDate"
+                         prop="submissionDate"
                          label="时间"
-                         width="100">
-        </el-table-column>
-        <el-table-column fixed
-                         prop="userName"
-                         label="用户名"
-                         width="120">
+                         width="95">
         </el-table-column>
         <el-table-column fixed
                          prop="taskNo"
                          label="任务编码"
-                         width="120">
+                         width="100">
+        </el-table-column>
+        <el-table-column fixed
+                         prop="taskType"
+                         label="任务类型"
+                         width="90">
         </el-table-column>
         <el-table-column fixed
                          prop="taskSubject"
-                         label="主题"
-                         width="200">
+                         label="任务主题"
+                         width="220">
+        </el-table-column>
+        <el-table-column fixed
+                         prop="systemName"
+                         label="系统名称"
+                         width="100">
+        </el-table-column>
+        <el-table-column fixed
+                         prop="assignee"
+                         label="任务所有人"
+                         width="120">
         </el-table-column>
         <el-table-column fixed
                          prop="estimatedEffort"
                          label="预估工时"
-                         width="100">
+                         width="80">
         </el-table-column>
         <el-table-column fixed
                          prop="actualEffort"
                          label="实际工时"
-                         width="100">
+                         width="80">
         </el-table-column>
         <el-table-column fixed
                          prop="status"
@@ -96,34 +117,142 @@
                          prop="taskContent"
                          label="内容">
         </el-table-column>
-        <el-table-column label="操作" width="160">
-            <template slot-scope="scope">
-              <el-button
-                size="mini"
-                type='primary'
-                @click="handleEdit(scope.$index, scope.row)">修改
-              </el-button>
-              <el-button
-                size="mini"
-                type="danger"
-                @click="handleDelete(scope.$index, scope.row)">删除
-              </el-button>
+        <el-table-column label="操作"
+                         width="120">
+          <template slot-scope="scope">
+            <el-button size="mini"
+                       type='primary'
+                       @click="handleEditDialog(scope.$index, scope.row)">修改
+            </el-button>
+            <!--
+            <el-button size="mini"
+                       type="danger"
+                       @click="handleDelete(scope.$index, scope.row)">删除
+            </el-button>
+            -->
           </template>
         </el-table-column>
       </el-table>
-       <!--分页begin-->
+      <!--分页begin-->
       <el-pagination align='center'
-             @size-change="handleSizeChange"
-             @current-change="handleCurrentChange"
-             :current-page="currentPage"
-             :page-sizes="[1,5,10,20]"
-             :page-size="pageSize"
-             layout="total, sizes, prev, pager, next, jumper"
-             :total="tableData.length">
+                     @size-change="handleSizeChange"
+                     @current-change="handleCurrentChange"
+                     :current-page="currentPage"
+                     :page-sizes="[1,5,10,20]"
+                     :page-size="pageSize"
+                     layout="total, sizes, prev, pager, next, jumper"
+                     :total="tableData.length">
       </el-pagination>
-       <!--分页end-->
+      <!--分页end-->
     </div>
-     <!--显示内容 begin-->
+    <!--显示内容 end-->
+
+    <!-- 弹出编辑框 begin -->
+    <el-dialog title="编辑任务信息"
+               :visible.sync="dialogFormVisible">
+      <el-form :model="editForm">
+        <el-form-item label="任务编号:"
+                      :label-width="formLabelWidth">
+          <el-input type="text"
+                    prefix-icon=""
+                    v-model="editForm.taskNo"
+                    placeholder="请输入用户名"
+                    auto-complete="off"
+                    :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="任务类型:"
+                      :label-width="formLabelWidth">
+          <el-select v-model="editForm.taskType"
+                     style="width:100%"
+                     placeholder="请选择任务类型">
+            <el-option v-for="item in taskTypeOptions"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="任务主题:"
+                      :label-width="formLabelWidth">
+          <el-input type="text"
+                    v-model="editForm.taskSubject"
+                    placeholder="请输入任务主题"
+                    auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="任务内容:"
+                      :label-width="formLabelWidth">
+          <el-input type="textarea"
+                    :rows="8"
+                    v-model="editForm.taskContent"
+                    placeholder="请输入任务内容"
+                    auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="系统名称:"
+                      :label-width="formLabelWidth">
+          <el-select v-model="editForm.systemName"
+                     style="width:100%"
+                     placeholder="请选择系统名称">
+            <el-option v-for="item in systemNameOptions"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="任务所有人:"
+                      :label-width="formLabelWidth">
+          <el-select v-model="editForm.assignee"
+                     style="width:100%"
+                     placeholder="请输入任务人">
+            <el-option v-for="item in assigneeOptions"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="预估工时(h):"
+                      :label-width="formLabelWidth">
+          <el-input type="text"
+                    v-model="editForm.estimatedEffort"
+                    placeholder="请输入预估工时"
+                    auto-complete="off"
+                    :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="实际工时(h):"
+                      :label-width="formLabelWidth">
+          <el-input type="text"
+                    v-model="editForm.actualEffort"
+                    placeholder="请输入实际工时"
+                    auto-complete="off"
+                    onkeyup="this.value=this.value.replace(/[^\d.]/g,'');"
+                    maxlength="4"></el-input>
+        </el-form-item>
+        <el-form-item label="任务状态:"
+                      :label-width="formLabelWidth"
+                      :required="true">
+          <el-select v-model="editForm.status"
+                     filterable
+                     style="width:100%"
+                     placeholder="请选择状态">
+            <el-option v-for="item in statusOptions"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+
+      </el-form>
+      <div slot="footer"
+           class="dialog-footer"
+           style="text">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary"
+                   @click="handleEditSave()">确 定</el-button>
+      </div>
+    </el-dialog>
+    <!-- 弹出编辑框 end -->
   </div>
 </template>
 
@@ -132,76 +261,186 @@ export default {
   name: 'Home',
   data () {
     return {
+      messages: [],
+      form: {
+        taskNo: '',
+        assignee: '',
+        status: '',
+        submissionDate: ''
+      },
+
       /*分页数据*/
       currentPage: 1, // 当前页码
       total: 20, // 总条数
       pageSize: 10, // 每页的数据条数
-      messages: [],
-      form: {
-        userName: '',
-        taskNo:'',
-        status: '',
-        workDate:''
-      },
-      tableData: [{
-        workDate: '2016-05-02',
-        userName: '王小虎',
-        taskNo: 'ITSR000001',
-        taskSubject: '升级JDK 8为OpenJDK 11',
-        taskContent: '将JDK 8升级以后的所有问题fix掉，然后完成回归测试。',
-        estimatedEffort: 40,
-        actualEffort: 0,
-        status:'NotStart'
-      },
-      {
-        workDate: '2016-05-02',
-        userName: '李二牛',
-        taskNo: 'ITSR000003',
-        taskSubject: '升级JDK 8为OpenJDK 11',
-        taskContent: '将JDK 8升级以后的所有问题fix掉，然后完成回归测试。',
-        estimatedEffort: 40,
-        actualEffort: 32,
-        status:'InProgress'
-      },
-      {
-        workDate: '2016-05-02',
-        userName: '张小兔',
-        taskNo: 'ITSR000003',
-        taskSubject: '升级JDK 8为OpenJDK 11',
-        taskContent: '将JDK 8升级以后的所有问题fix掉，然后完成回归测试。',
-        estimatedEffort: 40,
-        actualEffort: 40,
-        status:'Closed'
+      tableData: [],
+
+      //任务状态选项
+      statusOptions: [{
+        value: 'NotStart',
+        label: 'NotStart'
+      }, {
+        value: 'InProgress',
+        label: 'InProgress'
+      }, {
+        value: 'Resolve',
+        label: 'Resolve'
+      }, {
+        value: 'Closed',
+        label: 'Closed'
+      }, {
+        value: 'ReOpen',
+        label: 'ReOpen'
       }],
-      
-       options: [{
-          value: 'NotStart',
-          label: 'NotStart'
+
+      //assignee人员选项信息
+      assigneeOptions: [
+        {
+          value: 'yuandechun',
+          label: 'yuandechun'
         }, {
-          value: 'InProgress',
-          label: 'InProgress'
+          value: 'lixiong',
+          label: 'lixiong'
         }, {
-          value: 'Closed',
-          label: 'Closed'
+          value: 'lizhankui',
+          label: 'lizhankui'
         }, {
-          value: 'ReOpen',
-          label: 'ReOpen'
-        }], 
+          value: 'liulei',
+          label: 'liulei'
+        }, {
+          value: 'fanjianbo',
+          label: 'fanjianbo'
+        }],
+
+      //systemName选项信息
+      systemNameOptions: [
+        {
+          value: 'Seamless',
+          label: 'Seamless'
+        }, {
+          value: 'PaWeb',
+          label: 'PaWeb'
+        }, {
+          value: 'CIRC PAI',
+          label: 'CIRC PAI'
+        }, {
+          value: 'B2B',
+          label: 'B2B'
+        }, {
+          value: 'eCashman',
+          label: 'eCashman'
+        }],
+
+      //taskType选项信息 
+      taskTypeOptions: [
+        {
+          value: 'Request',
+          label: 'Request'
+        }, {
+          value: 'CR',
+          label: 'Change Request'
+        }, {
+          value: 'Enhancement',
+          label: 'Enhancement'
+        }, {
+          value: 'Defect',
+          label: 'Defect'
+        }],
+
+
+      /***编辑框 begin */
+      dialogFormVisible: false,
+      editForm: {
+        taskNo: '',
+        taskType: '',
+        taskSubject: '',
+        taskContent: '',
+        systemName: '',
+        assignee: '',
+        estimatedEffort: 0,
+        actualEffort: 0
+      },
+      formLabelWidth: '100px',
+      /***编辑框 end */
+
     }
   },
+
+  // 页面初始化数据
+  mounted: function () {
+    this.handleQuery();
+  },
   methods: {
-    handleClick (row) {
-      row;
+    // 设置每页显示条数
+    handleSizeChange (val) {
+      this.currentPage = 1;
+      this.pageSize = val;
     },
-    //设置每页显示条数
-    handleSizeChange(val) {
-       this.currentPage = 1;
-       this.pageSize = val;
-   },
-    //设置当前第几页
-    handleCurrentChange(val) {
-       this.currentPage = val;
-   },
+
+    // 设置当前第几页
+    handleCurrentChange (val) {
+      this.currentPage = val;
+    },
+
+    // 查询
+    handleQuery () {
+      this.$post('/api/task/query/', this.form)
+        .then(res => {
+          if (res.status == 'SUCCESS') {
+            this.tableData = res.data;
+          }
+          this.messages = res.messages;
+        })
+    },
+
+    // 重置查询
+    handleReset () {
+      this.form.taskNo = '';
+      this.form.assignee = '';
+      this.form.status = '';
+      this.form.submissionDate = ''
+    },
+
+    // 编辑弹框
+    handleEditDialog (indx, row) {
+      this.dialogFormVisible = true;
+      this.editForm = row;
+    },
+
+
+    //编辑保存
+    handleEditSave () {
+      this.$patch('/api/task/update', this.editForm)
+        .then(res => {
+          if (res.status == 'SUCCESS') {
+            this.handleQuery();
+          }
+          this.dialogFormVisible = false;
+          this.messages = res.messages;
+        })
+    },
+
+    // 删除
+    handleDelete (indx, row) {
+      this.$confirm('确定要删除这条信息吗？', '警告提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        closeOnClickModal: false,
+        type: 'warning',
+        center: true
+      }).then(async () => {
+        const delFormData = {
+          'taskNo': row.taskNo,
+        };
+        this.$delete('/api/task/delete', delFormData)
+          .then(res => {
+            if (res.status == 'SUCCESS') {
+              this.handleQuery();
+            }
+            this.messages = res.messages;
+          })
+      })
+    },
   },
 
 }

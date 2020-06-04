@@ -14,7 +14,7 @@
         <i class="el-icon-help"></i>
         <span slot="title">我的工作台</span>
       </template>
-      <el-menu-item index="/task/cernter">任务中心</el-menu-item>
+      <el-menu-item index="/task/cernter">我的任务</el-menu-item>
       <el-menu-item index="/task/created">新建任务</el-menu-item>
       <el-menu-item index="/task/timesheet">工时申报</el-menu-item>
       <el-submenu index="tool">
@@ -39,14 +39,14 @@
       <el-menu-item index="/manage/realNameAuthentication">实名认证</el-menu-item>
     </el-submenu>
 
-    <el-submenu index="5"
+    <el-submenu index="language"
                 class="header-menu-margin-left">
       <template slot="title">
         <i class="el-icon-s-tools"></i>
-        <span slot="title">语言</span>
+        <span slot="title">{{$t('nav.language.name')}}</span>
       </template>
-      <el-menu-item index="5-1">中文</el-menu-item>
-      <el-menu-item index="5-2">英文</el-menu-item>
+      <el-menu-item @click="handleChangeLanguage('translateCn')">{{$t('nav.language.lang.cn')}}</el-menu-item>
+      <el-menu-item @click="handleChangeLanguage('translateEn')">{{$t('nav.language.lang.en')}}</el-menu-item>
     </el-submenu>
 
     <el-menu-item index="6">
@@ -77,11 +77,15 @@ export default {
     };
   },
   methods: {
-    handleSelect () {
+    //切换多语言
+    handleChangeLanguage (val) {
+      this.$i18n.locale = val;
     },
 
     // 注销登陆
     handleLogout () {
+      //移除localStorage中的userName
+      localStorage.removeItem('userName')
       router.push({ path: '/login', querry: { redirect: router.currentRoute.fullPath } })
     },
   }
@@ -90,6 +94,6 @@ export default {
 
 <style scoped>
 .header-menu-margin-left {
-  margin-left: 38%;
+  margin-left: 35%;
 }
 </style>
