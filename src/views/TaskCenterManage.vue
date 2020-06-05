@@ -199,6 +199,15 @@
             </el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="任务创建人:"
+                      :label-width="formLabelWidth">
+          <el-input type="text"
+                    prefix-icon=""
+                    v-model="editForm.createdBy"
+                    placeholder="请输入创建人"
+                    auto-complete="off"
+                    :disabled="true"></el-input>
+        </el-form-item>
         <el-form-item label="任务所有人:"
                       :label-width="formLabelWidth">
           <el-select v-model="editForm.assignee"
@@ -357,6 +366,7 @@ export default {
         taskSubject: '',
         taskContent: '',
         systemName: '',
+        createdBy: '',
         assignee: '',
         estimatedEffort: 0,
         actualEffort: 0

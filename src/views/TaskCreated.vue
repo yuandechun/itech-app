@@ -1,70 +1,105 @@
 <template>
   <div style="border: 1px solid #e6e6e6;">
     <div class="task-created-div-style">
-      <div style="margin-bottom:5px;"><label>创建任务</label></div>
-      <el-form :model="form">
-        <el-form-item label="任务标题:"
-                      :label-width="formLabelWidth">
-          <el-input type="text"
-                    v-model="form.taskSubject"
-                    placeholder="请输入任务标题"
-                    auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="任务内容:"
-                      :label-width="formLabelWidth">
-          <el-input type="textarea"
-                    :rows="8"
-                    v-model="form.taskContent"
-                    placeholder="请输入任务内容"
-                    auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="任务类型:"
-                      :label-width="formLabelWidth">
-          <el-select v-model="form.taskType"
-                     style="width:100%"
-                     placeholder="请选择任务类型">
-            <el-option v-for="item in taskTypeOptions"
-                       :key="item.value"
-                       :label="item.label"
-                       :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="系统名称:"
-                      :label-width="formLabelWidth">
-          <el-select v-model="form.systemName"
-                     style="width:100%"
-                     placeholder="请选择系统名称">
-            <el-option v-for="item in systemNameOptions"
-                       :key="item.value"
-                       :label="item.label"
-                       :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="预估工时(h):"
-                      :label-width="formLabelWidth">
-          <el-input type="text"
-                    v-model="form.estimatedEffort"
-                    placeholder="请输入预估工时"
-                    auto-complete="off"
-                    onkeyup="this.value=this.value.replace(/[^\d.]/g,'');"
-                    maxlength="4"></el-input>
-        </el-form-item>
-        <el-form-item label="任务人:"
-                      :label-width="formLabelWidth">
-          <el-select v-model="form.assignee"
-                     style="width:100%"
-                     placeholder="请输入任务人">
-            <el-option v-for="item in assigneeOptions"
-                       :key="item.value"
-                       :label="item.label"
-                       :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
+      <div class="style-margin-top"
+           style="text-align: left;">
+        <h2 style="font-weight:normal;font-size:20px">新建任务:</h2>
+      </div>
+      <div class="style-margin-top">
+        <el-form :model="form"
+                 style="margin-left: 10%;">
 
-      </el-form>
+          <el-form-item label="任务标题:"
+                        :label-width="formLabelWidth"
+                        class="el-form-item-width">
+            <el-input type="text"
+                      v-model="form.taskSubject"
+                      placeholder="请输入任务标题"
+                      auto-complete="off"></el-input>
+          </el-form-item>
+
+          <el-form-item label="任务类型:"
+                        :label-width="formLabelWidth"
+                        class="el-form-item-medium-width">
+            <el-select v-model="form.taskType"
+                       style="width:100%"
+                       placeholder="请选择任务类型">
+              <el-option v-for="item in taskTypeOptions"
+                         :key="item.value"
+                         :label="item.label"
+                         :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="系统名称:"
+                        :label-width="formLabelWidth"
+                        class="el-form-item-medium-width">
+            <el-select v-model="form.systemName"
+                       style="width:100%"
+                       placeholder="请选择系统名称">
+              <el-option v-for="item in systemNameOptions"
+                         :key="item.value"
+                         :label="item.label"
+                         :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="优先级:"
+                        :label-width="formLabelWidth"
+                        class="el-form-item-medium-width">
+            <el-select v-model="form.severity"
+                       style="width:100%"
+                       placeholder="请选择优先级">
+              <el-option v-for="item in severityOptions"
+                         :key="item.value"
+                         :label="item.label"
+                         :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="任务内容:"
+                        :label-width="formLabelWidth"
+                        class="el-form-item-width">
+            <el-input type="textarea"
+                      :rows="6"
+                      v-model="form.taskContent"
+                      placeholder="请输入任务内容"
+                      auto-complete="off"
+                      class="el-textarea-inner"></el-input>
+          </el-form-item>
+
+          <el-form-item label="预估工时(h):"
+                        :label-width="formLabelWidth"
+                        class="el-form-item-medium-width">
+            <el-input type="text"
+                      v-model="form.estimatedEffort"
+                      style="width:100%"
+                      placeholder="请输入预估工时"
+                      auto-complete="off"
+                      onkeyup="this.value=this.value.replace(/[^\d.]/g,'');"
+                      maxlength="4"></el-input>
+          </el-form-item>
+
+          <el-form-item label="任务人:"
+                        :label-width="formLabelWidth"
+                        class="el-form-item-medium-width">
+            <el-select v-model="form.assignee"
+                       style="width:100%"
+                       placeholder="请输入任务人">
+              <el-option v-for="item in assigneeOptions"
+                         :key="item.value"
+                         :label="item.label"
+                         :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+
+        </el-form>
+      </div>
+
       <div slot="footer"
            class="dialog-footer"
            style="text">
@@ -75,6 +110,7 @@
                    round
                    @click="handleReset()">重置内容</el-button>
       </div>
+      <div class="style-margin-top"></div>
     </div>
     <!--查询框begin-->
   </div>
@@ -87,8 +123,8 @@ export default {
       form: {
         taskSubject: '',
         taskContent: '',
-        taskType: 'Request',
-        systemName: 'Seamless',
+        taskType: '',
+        systemName: '',
         estimatedEffort: 0,
         assignee: '',
       },
@@ -122,8 +158,8 @@ export default {
           value: 'PaWeb',
           label: 'PaWeb'
         }, {
-          value: 'Circ Pai',
-          label: 'Circ Pai'
+          value: 'CIRC PAI',
+          label: 'CIRC PAI'
         }, {
           value: 'B2B',
           label: 'B2B'
@@ -148,6 +184,19 @@ export default {
           label: 'Defect'
         }],
 
+      //taskType选项信息 
+      severityOptions: [
+        {
+          value: 'Hight',
+          label: 'Hight'
+        }, {
+          value: 'Medium',
+          label: 'Medium'
+        }, {
+          value: 'Low',
+          label: 'Low'
+        }],
+
     }
   },
 
@@ -156,6 +205,7 @@ export default {
   methods: {
     // 新建任务
     handleSubmit () {
+      this.form.createdBy = localStorage.getItem('userName');
       this.$post('/api/task/save', this.form)
         .then(res => {
           if (res.status == 'SUCCESS') {
@@ -173,6 +223,7 @@ export default {
       this.form.systemName = '';
       this.form.estimatedEffort = '';
       this.form.assignee = '';
+      this.form.severity = '';
     },
 
   }
@@ -183,10 +234,23 @@ export default {
 <style>
 /***div边框设置  border: 1px dashed #000;*/
 .task-created-div-style {
-  margin-top: 20px;
+  margin-top: 30px;
   /*border: 1px solid #e6e6e6;*/
-  min-height: 590px;
+  min-height: 600px;
   width: 70%;
   margin: 0 auto;
+}
+.style-margin-top {
+  margin-top: 15px;
+}
+.el-form-item-medium-width {
+  width: 35%;
+}
+.el-form-item-width {
+  width: 80%;
+}
+.el-textarea-inner {
+  font-family: "Microsoft";
+  font-size: 15px;
 }
 </style>
