@@ -67,7 +67,8 @@
       <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
                 height="310"
                 border
-                style="width: 100%">
+                style="width: 100%"
+                v-on:row-dblclick="rowdblclick">
         <el-table-column fixed
                          prop="submissionDate"
                          label="时间"
@@ -266,6 +267,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'Home',
   data () {
@@ -366,6 +368,7 @@ export default {
         taskSubject: '',
         taskContent: '',
         systemName: '',
+        userName: '',
         createdBy: '',
         assignee: '',
         estimatedEffort: 0,
@@ -395,7 +398,7 @@ export default {
 
     // 查询
     handleQuery () {
-      this.form.assignee = localStorage.getItem('userName');
+      this.form.assignee = sessionStorage.getItem('userName');
       this.$post('/api/task/query/', this.form)
         .then(res => {
           if (res.status == 'SUCCESS') {
@@ -419,9 +422,9 @@ export default {
       this.editForm = row;
     },
 
-
     //编辑保存
     handleEditSave () {
+      this.editForm.userName = sessionStorage.getItem('userName');
       this.$patch('/api/task/update', this.editForm)
         .then(res => {
           if (res.status == 'SUCCESS') {
@@ -453,6 +456,13 @@ export default {
           })
       })
     },
+
+    //跳转到task详细信息页面
+    rowdblclick (row) {
+      //this.$router.push({ name: 'taskDetail', params: { taskNo: row.taskNo } })
+      this.$router.push({ path: '/task/detail', query: { taskNo: row.taskNo } });
+    },
+
   },
 
 }

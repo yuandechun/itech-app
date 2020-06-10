@@ -205,7 +205,7 @@ export default {
   methods: {
     // 新建任务
     handleSubmit () {
-      this.form.createdBy = localStorage.getItem('userName');
+      this.form.createdBy = sessionStorage.getItem('userName');
       this.$post('/api/task/save', this.form)
         .then(res => {
           if (res.status == 'SUCCESS') {

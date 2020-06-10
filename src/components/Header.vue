@@ -75,8 +75,12 @@ export default {
     return {
       activeIndex: '1',
       activeIndex2: '1',
-      userName: localStorage.getItem('userName')
+      userName: ''
     };
+  },
+
+  mounted: function () {
+    this.userName = sessionStorage.getItem("userName");
   },
 
   methods: {
@@ -87,8 +91,8 @@ export default {
 
     // 注销登陆
     handleLogout () {
-      //移除localStorage中的userName
-      localStorage.removeItem('userName')
+      //移除sessionStorage中的userName
+      sessionStorage.removeItem('userName')
       router.push({ path: '/login', querry: { redirect: router.currentRoute.fullPath } })
     },
   }

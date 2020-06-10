@@ -3,6 +3,7 @@ import UserManage from '@/views/UserManage'
 import TaskCreated from '@/views/TaskCreated'
 import TaskCenterManage from '@/views/TaskCenterManage'
 import RealNameAuthentication from '@/views/RealName'
+import TaskDetail from '@/views/TaskDetail'
 
 //home page, router rules
 export default [
@@ -44,6 +45,14 @@ export default [
     component: TaskCreated,
     meta: {
       title: '新建任务'
+    }
+  },
+  {
+    path: '/task/detail',
+    name: 'taskDetail',
+    component: TaskDetail,
+    meta: {
+      title: '任务详细信息'
     }
   },
 ]

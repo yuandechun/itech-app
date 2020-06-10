@@ -56,11 +56,11 @@ export default {
       this.$post('/api/user/query', this.form)
         .then(res => {
           if (res.status == 'SUCCESS') {
-            //设置userName到localStorage中
-            localStorage.setItem('userName', res.data.userName)
-            router.push({ path: '/home', querry: { redirect: router.currentRoute.fullPath } })
+            //设置userName到sessionStorage中
+            sessionStorage.setItem('userName', res.data.userName)
+            this.$router.push({ path: '/home', querry: { redirect: router.currentRoute.fullPath } })
           } else {
-            router.push({ path: '/page404' })
+            this.$router.push({ path: '/page404' })
           }
         })
     }

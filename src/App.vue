@@ -46,7 +46,7 @@ export default {
   mounted: function () {
     if (this.isShowList.indexOf(this.$route.path) == -1) {
       this.isShow = false;
-    }else{
+    } else {
       this.isShow = true;
     }
     this.path = this.$route.path;
@@ -57,7 +57,7 @@ export default {
     $route () {
       if (this.isShowList.indexOf(this.$route.path) == -1) {
         this.isShow = false;
-      }else{
+      } else {
         this.isShow = true;
       }
     }
