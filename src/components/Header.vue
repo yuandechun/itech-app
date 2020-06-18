@@ -3,6 +3,7 @@
            :default-active="$route.path"
            class="el-menu-style"
            mode="horizontal">
+
     <el-menu-item index="/home">
       <i class="el-icon-menu"></i>
       <span slot="title">首页</span>
@@ -53,14 +54,15 @@
       <el-menu-item @click="handleChangeLanguage('translateEn')">{{$t('nav.language.lang.en')}}</el-menu-item>
     </el-submenu>
 
-    <el-submenu index="logout"
-                style="margin-left: 35%">
-      <template slot="title">
-        <i class="el-icon-s-custom"></i>
-        <span slot="title">{{userName}}</span>
-      </template>
-      <el-menu-item index=""><label @click="handleLogout()">注销登陆</label></el-menu-item>
-    </el-submenu>
+    <div class="el-menu-logout-style">
+      <el-submenu index="logout">
+        <template slot="title">
+          <i class="el-icon-s-custom"></i>
+          <span slot="title">{{userName}}</span>
+        </template>
+        <el-menu-item @click="handleLogout()">注销登陆</el-menu-item>
+      </el-submenu>
+    </div>
 
   </el-menu>
 </template>
@@ -100,6 +102,8 @@ export default {
 </script>
 
 <style scoped>
-.el-menu-style {
+.el-menu-logout-style {
+  float: right;
+  display: inline-block;
 }
 </style>
