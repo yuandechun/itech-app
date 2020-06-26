@@ -4,6 +4,9 @@ import axios from 'axios';
 // 定义接口基础url
 const base_url = 'https://localhost:8443';
 
+// axios 配置
+axios.defaults.timeout = 5000;
+
 /*
 // 定义loading变量
 let loading;
@@ -26,6 +29,10 @@ function endLoading () {
 //http request 拦截器
 axios.interceptors.request.use(
   config => {
+    //token验证
+    if (sessionStorage.getItem('Authorization')) {
+      config.headers.Authorization = sessionStorage.getItem('Authorization');
+    }
     //startLoading()
     config.data = JSON.stringify(config.data);
     config.headers['Content-Type'] = 'application/json;charset=utf-8';

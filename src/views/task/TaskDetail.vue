@@ -3,18 +3,17 @@
     <div class="task-detail-div-style">
       <div class="style-margin-top"
            style="text-align: left;">
-        <h2 style="font-weight:normal;font-size:20px">{{this.form.taskNo}}日志记录:</h2>
+        <h2 style="font-weight:normal;font-size:20px">Commits-{{this.form.taskNo}}</h2>
       </div>
       <div class="style-margin-top">
         <div class="block">
           <el-timeline style="text-align: left;">
-
             <el-timeline-item v-for="(item, index) in taskDataList"
                               :key="index"
                               :timestamp="item.submissionDate"
                               placement="top">
               <el-card>
-                <h4>{{item.createdBy}} 更新 Task</h4>
+                <h4>{{item.createdBy}}: modify task</h4>
                 <p class="p-line-height">更新时间：{{item.timestamp}}</p>
                 <p class="p-line-height">任务级别：{{item.severity}}</p>
                 <p class="p-line-height">任务负责人：{{item.assignee}}</p>

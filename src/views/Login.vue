@@ -39,6 +39,7 @@
 
 <script>
 import router from '../router'
+import { mapMutations } from 'vuex';
 
 export default {
   name: 'Login',
@@ -52,12 +53,15 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['setToken']),
     onSubmit () {
-      this.$post('/api/user/query', this.form)
+      this.$post(this.$api.userLogin, this.form)
         .then(res => {
           if (res.status == 'SUCCESS') {
-            //设置userName到sessionStorage中
-            sessionStorage.setItem('userName', res.data.userName)
+            //sessionStorage
+            sessionStorage.setItem('username', res.data.userName)
+            //store token
+            this.setToken({ Authorization: res.data.token })
             this.$router.push({ path: '/home', querry: { redirect: router.currentRoute.fullPath } })
           } else {
             this.$router.push({ path: '/page404' })

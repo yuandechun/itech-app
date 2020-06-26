@@ -1,6 +1,7 @@
 import Login from '@/views/Login'
 import Register from '@/views/Register'
 
+
 //register and login page router
 export default [
   {

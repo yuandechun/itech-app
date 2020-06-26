@@ -1,9 +1,13 @@
 import Home from '@/views/Home'
 import UserManage from '@/views/UserManage'
-import TaskCreated from '@/views/TaskCreated'
-import TaskCenterManage from '@/views/TaskCenterManage'
+import TaskCreated from '@/views/task/TaskCreated'
+import TaskCenterManage from '@/views/task/TaskCenterManage'
+import TaskDetail from '@/views/task/TaskDetail'
 import RealNameAuthentication from '@/views/RealName'
-import TaskDetail from '@/views/TaskDetail'
+import VerifyIDCard from '@/views/idcard/VerifyIDCard'
+
+
+
 
 //home page, router rules
 export default [
@@ -32,7 +36,7 @@ export default [
     }
   },
   {
-    path: '/task/cernter',
+    path: '/task',
     name: 'taskCenterManage',
     component: TaskCenterManage,
     meta: {
@@ -53,6 +57,14 @@ export default [
     component: TaskDetail,
     meta: {
       title: '任务详细信息'
+    }
+  },
+  {
+    path: '/verify/idCard',
+    name: 'verifyIDCard',
+    component: VerifyIDCard,
+    meta: {
+      title: '验证身份证'
     }
   },
 ]

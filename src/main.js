@@ -8,6 +8,7 @@ import i18n from './i18n/'
 import store from './store'
 import axios from 'axios'
 import { get, post, put, patch, del } from '@/utils/http'
+import api from '@/utils/api'
 
 
 
@@ -17,6 +18,7 @@ Vue.prototype.$get = get;
 Vue.prototype.$put = put;
 Vue.prototype.$patch = patch;
 Vue.prototype.$delete = del;
+Vue.prototype.$api = api;
 
 
 Vue.use(ElementUI);

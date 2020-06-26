@@ -14,12 +14,12 @@
         <i class="el-icon-help"></i>
         <span slot="title">我的工作台</span>
       </template>
-      <el-menu-item index="/task/cernter">我的任务</el-menu-item>
+      <el-menu-item index="/task">我的任务</el-menu-item>
       <el-menu-item index="/task/created">新建任务</el-menu-item>
       <el-menu-item index="/task/timesheet">工时申报</el-menu-item>
       <el-submenu index="tool">
         <template slot="title">工具</template>
-        <el-menu-item index="2-4-1">下载</el-menu-item>
+        <el-menu-item index="/verify/idCard">身份证验证</el-menu-item>
         <el-menu-item index="2-4-2">选项2</el-menu-item>
         <el-menu-item index="2-4-3">选项3</el-menu-item>
       </el-submenu>
@@ -58,7 +58,7 @@
       <el-submenu index="logout">
         <template slot="title">
           <i class="el-icon-s-custom"></i>
-          <span slot="title">{{userName}}</span>
+          <span slot="title">{{showlogin}}</span>
         </template>
         <el-menu-item @click="handleLogout()">注销登陆</el-menu-item>
       </el-submenu>
@@ -77,12 +77,8 @@ export default {
     return {
       activeIndex: '1',
       activeIndex2: '1',
-      userName: ''
+      showlogin: sessionStorage.getItem("username"),
     };
-  },
-
-  mounted: function () {
-    this.userName = sessionStorage.getItem("userName");
   },
 
   methods: {
@@ -93,8 +89,11 @@ export default {
 
     // 注销登陆
     handleLogout () {
-      //移除sessionStorage中的userName
-      sessionStorage.removeItem('userName')
+      //1.清除标记的        
+      sessionStorage.removeItem("username");
+      sessionStorage.removeItem("token");
+      //2.怎么同步呢？         
+      this.showlogin = null;
       router.push({ path: '/login', querry: { redirect: router.currentRoute.fullPath } })
     },
   }
