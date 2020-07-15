@@ -1,25 +1,26 @@
 <template>
   <div id="app">
-    <el-container v-show="!isShow">
-      <el-header>
-        <!-- 导航栏 -->
-        <v-header></v-header>
-      </el-header>
-      <el-container>
+    <div :style="height">
+      <el-container v-show="!isShow">
+        <el-header>
+          <!-- 导航栏 -->
+          <v-header></v-header>
+        </el-header>
         <el-main>
           <!-- Body -->
           <router-view></router-view>
         </el-main>
+        <el-footer>
+          <!-- 页脚 -->
+          <v-footer></v-footer>
+        </el-footer>
       </el-container>
-    </el-container>
 
-    <!-- 登录,注册页面显示 -->
-    <el-container v-if="isShow">
-      <!--<router-view style="min-height: 520px"></router-view>-->
-      <router-view></router-view>
-    </el-container>
-    <!-- 页脚 -->
-    <v-footer></v-footer>
+      <!-- 登录,注册页面显示 -->
+      <el-container v-if="isShow">
+        <router-view></router-view>
+      </el-container>
+    </div>
   </div>
 </template>
 
@@ -34,8 +35,18 @@ export default {
       path: '',
       isShow: true,
       isShowList: ['/login', '/register', '/forgetPassword', '/page404'],
+      height: {
+        width: '100%',
+        height: '',
+        backguound: '#ccc',
+      }
     }
   },
+
+  created () {
+    this.hh()
+  },
+
   components: {
     'v-header': Header,
     'v-footer': Footer,
@@ -62,6 +73,12 @@ export default {
       }
     }
   },
+
+  methods: {
+    hh () {
+      this.height.height = window.innerHeight - 63 + 'px';
+    }
+  }
 }
 </script>
 

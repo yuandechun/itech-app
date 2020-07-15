@@ -20,11 +20,11 @@
             <el-form-item label="任务类型:">
               <el-select v-model="form.taskType"
                          style="width:100%"
-                         placeholder="请输入任务人">
+                         placeholder="请输入任务类型">
                 <el-option v-for="item in taskTypeOptions"
-                           :key="item.value"
-                           :label="item.label"
-                           :value="item.value">
+                           :key="item.taskType"
+                           :label="item.taskType"
+                           :value="item.taskValue">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -36,9 +36,9 @@
                          filterable
                          placeholder="请选择">
                 <el-option v-for="item in statusOptions"
-                           :key="item.value"
-                           :label="item.label"
-                           :value="item.value">
+                           :key="item.status"
+                           :label="item.status"
+                           :value="item.status">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -167,9 +167,9 @@
                      style="width:100%"
                      placeholder="请选择任务类型">
             <el-option v-for="item in taskTypeOptions"
-                       :key="item.value"
-                       :label="item.label"
-                       :value="item.value">
+                       :key="item.taskType"
+                       :label="item.taskType"
+                       :value="item.taskValue">
             </el-option>
           </el-select>
         </el-form-item>
@@ -194,9 +194,9 @@
                      style="width:100%"
                      placeholder="请选择系统名称">
             <el-option v-for="item in systemNameOptions"
-                       :key="item.value"
-                       :label="item.label"
-                       :value="item.value">
+                       :key="item.systemName"
+                       :label="item.systemName"
+                       :value="item.systemName">
             </el-option>
           </el-select>
         </el-form-item>
@@ -215,9 +215,9 @@
                      style="width:100%"
                      placeholder="请输入任务人">
             <el-option v-for="item in assigneeOptions"
-                       :key="item.value"
-                       :label="item.label"
-                       :value="item.value">
+                       :key="item.name"
+                       :label="item.name"
+                       :value="item.name">
             </el-option>
           </el-select>
         </el-form-item>
@@ -246,9 +246,9 @@
                      style="width:100%"
                      placeholder="请选择状态">
             <el-option v-for="item in statusOptions"
-                       :key="item.value"
-                       :label="item.label"
-                       :value="item.value">
+                       :key="item.status"
+                       :label="item.status"
+                       :value="item.status">
             </el-option>
           </el-select>
         </el-form-item>
@@ -267,6 +267,9 @@
 </template>
 
 <script>
+import userInfo from '@/data/user.json';
+import statusInfo from '@/data/task.json';
+
 
 export default {
   name: 'Home',
@@ -288,76 +291,16 @@ export default {
       tableData: [],
 
       //任务状态选项
-      statusOptions: [{
-        value: 'NotStart',
-        label: 'NotStart'
-      }, {
-        value: 'InProgress',
-        label: 'InProgress'
-      }, {
-        value: 'Resolve',
-        label: 'Resolve'
-      }, {
-        value: 'Closed',
-        label: 'Closed'
-      }, {
-        value: 'ReOpen',
-        label: 'ReOpen'
-      }],
+      statusOptions: statusInfo.statusList,
 
       //assignee人员选项信息
-      assigneeOptions: [
-        {
-          value: 'yuandechun',
-          label: 'yuandechun'
-        }, {
-          value: 'lixiong',
-          label: 'lixiong'
-        }, {
-          value: 'lizhankui',
-          label: 'lizhankui'
-        }, {
-          value: 'liulei',
-          label: 'liulei'
-        }, {
-          value: 'fanjianbo',
-          label: 'fanjianbo'
-        }],
+      assigneeOptions: userInfo.userList,
 
       //systemName选项信息
-      systemNameOptions: [
-        {
-          value: 'Seamless',
-          label: 'Seamless'
-        }, {
-          value: 'PaWeb',
-          label: 'PaWeb'
-        }, {
-          value: 'CIRC PAI',
-          label: 'CIRC PAI'
-        }, {
-          value: 'B2B',
-          label: 'B2B'
-        }, {
-          value: 'eCashman',
-          label: 'eCashman'
-        }],
+      systemNameOptions: statusInfo.systemNameList,
 
       //taskType选项信息 
-      taskTypeOptions: [
-        {
-          value: 'Request',
-          label: 'Request'
-        }, {
-          value: 'CR',
-          label: 'Change Request'
-        }, {
-          value: 'Enhancement',
-          label: 'Enhancement'
-        }, {
-          value: 'Defect',
-          label: 'Defect'
-        }],
+      taskTypeOptions: statusInfo.taskTypeList,
 
 
       /***编辑框 begin */
@@ -398,7 +341,7 @@ export default {
 
     // 查询
     handleQuery () {
-      this.form.assignee = sessionStorage.getItem('userName');
+      this.form.assignee = sessionStorage.getItem('username');
       this.$post('/api/task/query/', this.form)
         .then(res => {
           if (res.status == 'SUCCESS') {
@@ -462,6 +405,7 @@ export default {
       //this.$router.push({ name: 'taskDetail', params: { taskNo: row.taskNo } })
       this.$router.push({ path: '/task/detail', query: { taskNo: row.taskNo } });
     },
+
 
   },
 

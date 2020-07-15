@@ -25,9 +25,9 @@
                        style="width:100%"
                        placeholder="请选择任务类型">
               <el-option v-for="item in taskTypeOptions"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
+                         :key="item.taskType"
+                         :label="item.taskType"
+                         :value="item.taskValue">
               </el-option>
             </el-select>
           </el-form-item>
@@ -39,9 +39,9 @@
                        style="width:100%"
                        placeholder="请选择系统名称">
               <el-option v-for="item in systemNameOptions"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
+                         :key="item.systemName"
+                         :label="item.systemName"
+                         :value="item.systemName">
               </el-option>
             </el-select>
           </el-form-item>
@@ -90,9 +90,9 @@
                        style="width:100%"
                        placeholder="请输入任务人">
               <el-option v-for="item in assigneeOptions"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
+                         :key="item.name"
+                         :label="item.name"
+                         :value="item.name">
               </el-option>
             </el-select>
           </el-form-item>
@@ -117,6 +117,9 @@
 </template>
 
 <script>
+import userInfo from '@/data/user.json';
+import statusInfo from '@/data/task.json';
+
 export default {
   data () {
     return {
@@ -131,71 +134,16 @@ export default {
       formLabelWidth: '100px',
 
       //assignee人员选项信息
-      assigneeOptions: [
-        {
-          value: 'yuandechun',
-          label: 'yuandechun'
-        }, {
-          value: 'lixiong',
-          label: 'lixiong'
-        }, {
-          value: 'lizhankui',
-          label: 'lizhankui'
-        }, {
-          value: 'liulei',
-          label: 'liulei'
-        }, {
-          value: 'fanjianbo',
-          label: 'fanjianbo'
-        }],
+      assigneeOptions: userInfo.userList,
 
       //systemName选项信息
-      systemNameOptions: [
-        {
-          value: 'Seamless',
-          label: 'Seamless'
-        }, {
-          value: 'PaWeb',
-          label: 'PaWeb'
-        }, {
-          value: 'CIRC PAI',
-          label: 'CIRC PAI'
-        }, {
-          value: 'B2B',
-          label: 'B2B'
-        }, {
-          value: 'eCashman',
-          label: 'eCashman'
-        }],
+      systemNameOptions: statusInfo.systemNameList,
 
       //taskType选项信息 
-      taskTypeOptions: [
-        {
-          value: 'Request',
-          label: 'Request'
-        }, {
-          value: 'CR',
-          label: 'Change Request'
-        }, {
-          value: 'Enhancement',
-          label: 'Enhancement'
-        }, {
-          value: 'Defect',
-          label: 'Defect'
-        }],
+      taskTypeOptions: statusInfo.taskTypeList,
 
-      //taskType选项信息 
-      severityOptions: [
-        {
-          value: 'Hight',
-          label: 'Hight'
-        }, {
-          value: 'Medium',
-          label: 'Medium'
-        }, {
-          value: 'Low',
-          label: 'Low'
-        }],
+      //severity选项信息 
+      severityOptions: statusInfo.severityList,
 
     }
   },

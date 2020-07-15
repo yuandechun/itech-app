@@ -1,0 +1,29 @@
+{
+  "userList": [
+    {
+      "name": "yuandechun",
+      "age": 18,
+      "sex": "男"
+    },
+    {
+      "name": "lixiong",
+      "age": 18,
+      "sex": "男"
+    },
+    {
+      "name": "lizhankui",
+      "age": 18,
+      "sex": "男"
+    },
+    {
+      "name": "liulei",
+      "age": 18,
+      "sex": "男"
+    },
+    {
+      "name": "fanjianbo",
+      "age": 18,
+      "sex": "男"
+    }
+  ]
+}

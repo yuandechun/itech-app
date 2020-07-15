@@ -245,18 +245,7 @@ export default {
       currentPage: 1, // 当前页码
       total: 20, // 总条数
       pageSize: 10, // 每页的数据条数
-      tableData: [
-        //   {
-        //   userName: '123456',
-        //   idCard: '123412341234123412',
-        //   gender:'男',
-        //   phone:'123456',
-        //   email:'123456@163.com',
-        //   lockInd: 'Y',
-        //   lockDate:'2020-03-26',
-        //   address:'上海市杨浦区政立路477号1号楼'
-        // },
-      ],
+      tableData: [],
       /***查询条件信息end */
 
       /***编辑框 begin */
@@ -316,7 +305,7 @@ export default {
       this.dialogFormVisible = true;
       this.editForm = row;
       //编辑时不显示密码
-      this.editForm.password='';
+      this.editForm.password = '';
     },
 
 
