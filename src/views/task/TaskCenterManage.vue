@@ -367,7 +367,7 @@ export default {
 
     //编辑保存
     handleEditSave () {
-      this.editForm.userName = sessionStorage.getItem('userName');
+      this.editForm.userName = sessionStorage.getItem('username');
       this.$patch('/api/task/update', this.editForm)
         .then(res => {
           if (res.status == 'SUCCESS') {

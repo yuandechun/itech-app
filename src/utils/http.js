@@ -5,7 +5,7 @@ import axios from 'axios';
 const base_url = 'https://localhost:8443';
 
 // axios 配置
-axios.defaults.timeout = 5000;
+axios.defaults.timeout = 50000;
 
 /*
 // 定义loading变量
@@ -31,7 +31,7 @@ axios.interceptors.request.use(
   config => {
     //token验证
     if (sessionStorage.getItem('Authorization')) {
-      config.headers.Authorization = sessionStorage.getItem('Authorization');
+      config.headers.authorization = sessionStorage.getItem('Authorization');
     }
     //startLoading()
     config.data = JSON.stringify(config.data);
