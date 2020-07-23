@@ -2,7 +2,7 @@
   <div id="app">
     <div :style="height">
       <el-container v-show="!isShow">
-        <el-header>
+        <el-header style="padding: 0px;">
           <!-- 导航栏 -->
           <v-header></v-header>
         </el-header>
@@ -10,7 +10,7 @@
           <!-- Body -->
           <router-view></router-view>
         </el-main>
-        <el-footer>
+        <el-footer style="padding: 0px;">
           <!-- 页脚 -->
           <v-footer></v-footer>
         </el-footer>

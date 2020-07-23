@@ -105,4 +105,7 @@ export default {
   float: right;
   display: inline-block;
 }
+.el-menu-style {
+  background-color: #563d7c;
+}
 </style>
