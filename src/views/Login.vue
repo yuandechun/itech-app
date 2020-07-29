@@ -1,61 +1,61 @@
 <template>
-  <div class="login-div-css">
-    <el-form :model="form"
-             ref="form"
-             label-width="100px">
-      <el-form-item>
-        <span class="login-title-css">登陆(Login)</span>
-      </el-form-item>
 
-      <el-form-item label="用户名">
+  <body id="poster">
+    <el-form :model="loginForm"
+             class="login-container"
+             label-position="left"
+             label-width="40px">
+      <h3 class="login_title">系统登陆</h3>
+      <el-form-item label="用户">
         <el-input type="text"
                   prefix-icon="el-icon-user"
-                  v-model="form.userName"
-                  placeholder="请输入用户名"></el-input>
+                  v-model="loginForm.userName"
+                  auto-complete="off"
+                  placeholder="账号"></el-input>
       </el-form-item>
 
       <el-form-item label="密码">
         <el-input type="password"
                   prefix-icon="el-icon-key"
-                  v-model="form.password"
-                  placeholder="请输入密码"></el-input>
+                  v-model="loginForm.password"
+                  auto-complete="off"
+                  placeholder="密码"></el-input>
       </el-form-item>
 
-      <el-form-item>
+      <el-form-item style="width: 100%">
         <el-button type="primary"
                    class="login-button-width"
-                   @click="onSubmit">
-          登陆
-        </el-button>
+                   v-on:click="login">登陆账号</el-button>
         <el-button type="text">
           <router-link to="/register">注册账号</router-link>
         </el-button>
       </el-form-item>
-
     </el-form>
-  </div>
+  </body>
 </template>
-
-
+ 
+ 
 <script>
 import router from '../router'
 import { mapMutations } from 'vuex';
 
 export default {
-  name: 'Login',
+  name: "Login",
   data () {
     return {
       messages: [],
-      form: {
+      loginForm: {
         userName: '',
         password: ''
-      }
+      },
     }
   },
+
   methods: {
     ...mapMutations(['setToken']),
-    onSubmit () {
-      this.$post(this.$api.userLogin, this.form)
+    // 登陆
+    login () {
+      this.$post(this.$api.userLogin, this.loginForm)
         .then(res => {
           if (res.status == 'SUCCESS') {
             //sessionStorage
@@ -69,22 +69,43 @@ export default {
         })
     }
   }
+
+
 }
 </script>
-
-<style scoped>
-.login-div-css {
-  min-height: 460px;
-  width: 30%;
-  text-align: center;
-  margin-left: 35%;
-  margin-top: 10%;
+ 
+<style>
+#poster {
+  background: url("../assets/eva.jpg") no-repeat;
+  background-position: center;
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  position: fixed;
 }
+body {
+  margin: 0px;
+  padding: 0;
+}
+
+.login-container {
+  border-radius: 15px;
+  background-clip: padding-box;
+  margin: 120px auto;
+  width: 25%;
+  padding: 35px 35px 15px 35px;
+  background: #fff;
+  border: 1px solid #eaeaea;
+  box-shadow: 0 0 25px #cac6c6;
+}
+
+.login_title {
+  margin: 0px auto 40px auto;
+  text-align: center;
+  color: #505458;
+}
+
 .login-button-width {
   width: 100%;
-}
-.login-title-css {
-  text-align: center;
-  font-size: 20px;
 }
 </style>
