@@ -70,9 +70,13 @@ export default {
     // 注册
     register () {
       this.$post('/api/user/save', this.registerForm)
-        .then(response => {
-          this.messages = response.messages;
-          router.push({ path: '/login' })
+        .then(res => {
+          if (res.status == 'SUCCESS') {
+            this.messages = res.messages;
+            router.push({ path: '/login' })
+          } else {
+            this.$router.push({ path: '/page404' })
+          }
         })
     }
   }

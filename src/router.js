@@ -30,6 +30,8 @@ Vue.use(Router)
 
 
 const router = new Router({
+  //如打包文件存放在Tomcat/webapps/itech下，那么就这么写
+  base: '/itech/',
   mode: 'history',
   routes: [
     ...home,

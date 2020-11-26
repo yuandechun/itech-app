@@ -104,6 +104,7 @@ export default {
 .el-menu-logout-style {
   float: right;
   display: inline-block;
+  width: 12%;
 }
 .el-menu-style {
   background-color: #563d7c;

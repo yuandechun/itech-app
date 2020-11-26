@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <div :style="height">
-      <el-container v-show="!isShow">
+      <el-container v-if="!isShow"
+                    direction="vertical">
         <el-header style="padding: 0px;">
           <!-- 导航栏 -->
           <v-header></v-header>
