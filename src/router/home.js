@@ -5,6 +5,7 @@ import TaskCenterManage from '@/views/task/TaskCenterManage'
 import TaskDetail from '@/views/task/TaskDetail'
 import RealNameAuthentication from '@/views/RealName'
 import VerifyIDCard from '@/views/idcard/VerifyIDCard'
+import TimesheetManage from '@/views/timesheet/TimesheetManage'
 
 
 
@@ -49,6 +50,14 @@ export default [
     component: TaskCreated,
     meta: {
       title: '新建任务'
+    }
+  },
+  {
+    path: '/task/timesheet',
+    name: 'timesheetManage',
+    component: TimesheetManage,
+    meta: {
+      title: '工时管理'
     }
   },
   {

@@ -16,7 +16,7 @@
       </template>
       <el-menu-item index="/task">我的任务</el-menu-item>
       <el-menu-item index="/task/created">新建任务</el-menu-item>
-      <el-menu-item index="/task/timesheet">工时申报</el-menu-item>
+      <el-menu-item index="/task/timesheet">工时管理</el-menu-item>
       <el-submenu index="tool">
         <template slot="title">工具</template>
         <el-menu-item index="/verify/idCard">身份证验证</el-menu-item>
@@ -90,7 +90,6 @@ export default {
     // 注销登陆
     handleLogout () {
       //1.清除标记的        
-      sessionStorage.removeItem("username");
       sessionStorage.removeItem("token");
       //2.怎么同步呢？         
       this.showlogin = null;

@@ -2,7 +2,8 @@ import axios from 'axios';
 //import { Loading } from 'element-ui';
 
 // 定义接口基础url
-const base_url = 'https://localhost:8443';
+//const base_url = 'https://localhost:8443';
+const base_url = 'http://localhost:8443';
 
 // axios 配置
 axios.defaults.timeout = 50000;

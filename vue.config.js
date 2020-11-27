@@ -8,5 +8,5 @@ module.exports = {
     proxy: null
   },
 
-  publicPath: './'
+  publicPath: '/'
 };

@@ -6,8 +6,17 @@
       <el-form :model="form"
                ref="form"
                label-width="100px">
-        <div style="text-align: left"><label>任务中心:</label></div>
+        <div style="text-align: left"><label>我的工时:</label></div>
         <el-row :gutter="20">
+          <el-col :span="6">
+            <el-form-item label="工作日期:">
+              <el-date-picker v-model="form.workDate"
+                              type="date"
+                              placeholder="选择日期">
+              </el-date-picker>
+            </el-form-item>
+          </el-col>
+
           <el-col :span="6">
             <el-form-item label="任务号:">
               <el-input type="text"
@@ -17,40 +26,28 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="任务所有人:">
-              <el-select v-model="form.assignee"
+            <el-form-item label="任务类型:">
+              <el-select v-model="form.taskType"
                          style="width:100%"
-                         placeholder="请输入任务人">
-                <el-option v-for="item in assigneeOptions"
-                           :key="item.name"
-                           :label="item.name"
-                           :value="item.name">
+                         placeholder="请输入任务类型">
+                <el-option v-for="item in taskTypeOptions"
+                           :key="item.taskType"
+                           :label="item.taskType"
+                           :value="item.taskValue">
                 </el-option>
               </el-select>
             </el-form-item>
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="状态:">
-              <el-select v-model="form.status"
-                         filterable
-                         placeholder="请选择">
-                <el-option v-for="item in statusOptions"
-                           :key="item.status"
-                           :label="item.status"
-                           :value="item.status">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="创建日期:">
-              <el-date-picker v-model="form.submissionDate"
+            <el-form-item label="提交日期:">
+              <el-date-picker v-model="form.createdDate"
                               type="date"
                               placeholder="选择日期">
               </el-date-picker>
             </el-form-item>
           </el-col>
+
         </el-row>
         <el-button type="primary"
                    round
@@ -71,7 +68,7 @@
                 v-on:row-dblclick="rowdblclick">
         <el-table-column fixed
                          prop="submissionDate"
-                         label="时间"
+                         label="工作日期"
                          width="95">
         </el-table-column>
         <el-table-column fixed
@@ -278,6 +275,7 @@ export default {
       messages: [],
       form: {
         taskNo: '',
+        taskType: '',
         assignee: '',
         status: '',
         submissionDate: ''
@@ -340,7 +338,8 @@ export default {
 
     // 查询
     handleQuery () {
-      this.$post('/api/task/query/all/', this.form)
+      this.form.assignee = sessionStorage.getItem('username');
+      this.$post('/api/task/query/', this.form)
         .then(res => {
           if (res.status == 'SUCCESS') {
             this.tableData = res.data;
@@ -352,9 +351,9 @@ export default {
     // 重置查询
     handleReset () {
       this.form.taskNo = '';
-      this.form.assignee = '';
-      this.form.status = '';
-      this.form.submissionDate = ''
+      this.form.taskType = '';
+      this.form.workDate = '';
+      this.form.createdDate = ''
     },
 
     // 编辑弹框
@@ -365,6 +364,7 @@ export default {
 
     //编辑保存
     handleEditSave () {
+      this.editForm.userName = sessionStorage.getItem('username');
       this.$patch('/api/task/update', this.editForm)
         .then(res => {
           if (res.status == 'SUCCESS') {
@@ -396,7 +396,6 @@ export default {
           })
       })
     },
-
 
     //跳转到task详细信息页面
     rowdblclick (row) {

@@ -341,8 +341,7 @@ export default {
 
     // 查询
     handleQuery () {
-      this.form.assignee = sessionStorage.getItem('username');
-      this.$post('/api/task/query/', this.form)
+      this.$post('/api/task/query/user-task/', this.form)
         .then(res => {
           if (res.status == 'SUCCESS') {
             this.tableData = res.data;
@@ -367,7 +366,6 @@ export default {
 
     //编辑保存
     handleEditSave () {
-      this.editForm.userName = sessionStorage.getItem('username');
       this.$patch('/api/task/update', this.editForm)
         .then(res => {
           if (res.status == 'SUCCESS') {

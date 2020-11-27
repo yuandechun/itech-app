@@ -10,11 +10,11 @@
           <el-timeline style="text-align: left;">
             <el-timeline-item v-for="(item, index) in taskDataList"
                               :key="index"
-                              :timestamp="item.submissionDate"
+                              :timestamp="item.timestamp"
                               placement="top">
               <el-card>
-                <h4>{{item.createdBy}}: modify task</h4>
-                <p class="p-line-height">更新时间：{{item.timestamp}}</p>
+                <h4>{{item.createdBy}}: 更新信息如下:</h4>
+                <!-- <p class="p-line-height">更新时间：{{item.timestamp}}</p> -->
                 <p class="p-line-height">任务级别：{{item.severity}}</p>
                 <p class="p-line-height">任务负责人：{{item.assignee}}</p>
                 <p class="p-line-height">总工时：{{item.estimatedEffort}}</p>
