@@ -89,7 +89,8 @@ export default {
 
     // 注销登陆
     handleLogout () {
-      //1.清除标记的        
+      //1.清除标记的    
+      sessionStorage.removeItem("username");
       sessionStorage.removeItem("token");
       //2.怎么同步呢？         
       this.showlogin = null;

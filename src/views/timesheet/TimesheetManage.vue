@@ -55,6 +55,9 @@
         <el-button type="primary"
                    round
                    @click="handleReset()">重置查询</el-button>
+        <el-button type='primary'
+                   round
+                   @click="handleAddDialog()">新增工时</el-button>
       </el-form>
     </div>
     <!--查询框begin-->
@@ -64,70 +67,57 @@
       <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
                 height="310"
                 border
-                style="width: 100%"
-                v-on:row-dblclick="rowdblclick">
+                style="width: 100%">
         <el-table-column fixed
-                         prop="submissionDate"
+                         prop="workDay"
                          label="工作日期"
-                         width="95">
+                         width="100">
+        </el-table-column>
+        <el-table-column fixed
+                         prop="userName"
+                         label="姓名"
+                         width="150">
+        </el-table-column>
+        <el-table-column fixed
+                         prop="effort"
+                         label="工时"
+                         width="50">
+        </el-table-column>
+        <el-table-column fixed
+                         prop="systemName"
+                         label="系统名称"
+                         width="200">
         </el-table-column>
         <el-table-column fixed
                          prop="taskNo"
-                         label="任务编码"
+                         label="任务编号"
                          width="100">
         </el-table-column>
         <el-table-column fixed
                          prop="taskType"
                          label="任务类型"
-                         width="90">
-        </el-table-column>
-        <el-table-column fixed
-                         prop="taskSubject"
-                         label="任务主题"
-                         width="220">
-        </el-table-column>
-        <el-table-column fixed
-                         prop="systemName"
-                         label="系统名称"
-                         width="100">
-        </el-table-column>
-        <el-table-column fixed
-                         prop="assignee"
-                         label="任务所有人"
                          width="120">
         </el-table-column>
         <el-table-column fixed
-                         prop="estimatedEffort"
-                         label="预估工时"
-                         width="80">
+                         prop="timestamp"
+                         label="提交日期"
+                         width="160">
         </el-table-column>
         <el-table-column fixed
-                         prop="actualEffort"
-                         label="实际工时"
-                         width="80">
-        </el-table-column>
-        <el-table-column fixed
-                         prop="status"
-                         label="状态"
-                         width="100">
-        </el-table-column>
-        <el-table-column fixed
-                         prop="taskContent"
-                         label="内容">
+                         prop="remarks"
+                         label="备注">
         </el-table-column>
         <el-table-column label="操作"
-                         width="120">
+                         width="160">
           <template slot-scope="scope">
             <el-button size="mini"
                        type='primary'
                        @click="handleEditDialog(scope.$index, scope.row)">修改
             </el-button>
-            <!--
             <el-button size="mini"
                        type="danger"
                        @click="handleDelete(scope.$index, scope.row)">删除
             </el-button>
-            -->
           </template>
         </el-table-column>
       </el-table>
@@ -149,20 +139,27 @@
     <el-dialog title="编辑任务信息"
                :visible.sync="dialogFormVisible">
       <el-form :model="editForm">
-        <el-form-item label="任务编号:"
+        <el-form-item label="工作日期:"
                       :label-width="formLabelWidth">
           <el-input type="text"
-                    prefix-icon=""
-                    v-model="editForm.taskNo"
-                    placeholder="请输入用户名"
+                    v-model="editForm.workDay"
+                    placeholder="请选择工作日期"
                     auto-complete="off"
                     :disabled="true"></el-input>
         </el-form-item>
-        <el-form-item label="任务类型:"
+        <el-form-item label="用户名:"
                       :label-width="formLabelWidth">
-          <el-select v-model="editForm.taskType"
+          <el-input type="text"
+                    v-model="editForm.userName"
+                    placeholder="请选择工作日期"
+                    auto-complete="off"
+                    :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="任务编号:"
+                      :label-width="formLabelWidth">
+          <el-select v-model="editForm.taskNo"
                      style="width:100%"
-                     placeholder="请选择任务类型">
+                     placeholder="请输入任务编号">
             <el-option v-for="item in taskTypeOptions"
                        :key="item.taskType"
                        :label="item.taskType"
@@ -170,90 +167,26 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="任务主题:"
+
+        <el-form-item label="实际工时(h):"
                       :label-width="formLabelWidth">
           <el-input type="text"
-                    v-model="editForm.taskSubject"
-                    placeholder="请输入任务主题"
+                    v-model="editForm.estimatedEffort"
+                    placeholder="请输入工时"
                     auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="任务内容:"
+        <el-form-item label="备注:"
                       :label-width="formLabelWidth">
           <el-input type="textarea"
                     :rows="8"
                     v-model="editForm.taskContent"
-                    placeholder="请输入任务内容"
+                    placeholder="请输入备注内容"
                     auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="系统名称:"
-                      :label-width="formLabelWidth">
-          <el-select v-model="editForm.systemName"
-                     style="width:100%"
-                     placeholder="请选择系统名称">
-            <el-option v-for="item in systemNameOptions"
-                       :key="item.systemName"
-                       :label="item.systemName"
-                       :value="item.systemName">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="任务创建人:"
-                      :label-width="formLabelWidth">
-          <el-input type="text"
-                    prefix-icon=""
-                    v-model="editForm.createdBy"
-                    placeholder="请输入创建人"
-                    auto-complete="off"
-                    :disabled="true"></el-input>
-        </el-form-item>
-        <el-form-item label="任务所有人:"
-                      :label-width="formLabelWidth">
-          <el-select v-model="editForm.assignee"
-                     style="width:100%"
-                     placeholder="请输入任务人">
-            <el-option v-for="item in assigneeOptions"
-                       :key="item.name"
-                       :label="item.name"
-                       :value="item.name">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="预估工时(h):"
-                      :label-width="formLabelWidth">
-          <el-input type="text"
-                    v-model="editForm.estimatedEffort"
-                    placeholder="请输入预估工时"
-                    auto-complete="off"
-                    :disabled="true"></el-input>
-        </el-form-item>
-        <el-form-item label="实际工时(h):"
-                      :label-width="formLabelWidth">
-          <el-input type="text"
-                    v-model="editForm.actualEffort"
-                    placeholder="请输入实际工时"
-                    auto-complete="off"
-                    onkeyup="this.value=this.value.replace(/[^\d.]/g,'');"
-                    maxlength="4"></el-input>
-        </el-form-item>
-        <el-form-item label="任务状态:"
-                      :label-width="formLabelWidth"
-                      :required="true">
-          <el-select v-model="editForm.status"
-                     filterable
-                     style="width:100%"
-                     placeholder="请选择状态">
-            <el-option v-for="item in statusOptions"
-                       :key="item.status"
-                       :label="item.status"
-                       :value="item.status">
-            </el-option>
-          </el-select>
-        </el-form-item>
-
       </el-form>
       <div slot="footer"
            class="dialog-footer"
-           style="text">
+           style="text;text-align: center;">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary"
                    @click="handleEditSave()">确 定</el-button>
@@ -274,11 +207,10 @@ export default {
     return {
       messages: [],
       form: {
+        workDate: '',
         taskNo: '',
         taskType: '',
-        assignee: '',
-        status: '',
-        submissionDate: ''
+        createdDate: ''
       },
 
       /*分页数据*/
@@ -338,8 +270,7 @@ export default {
 
     // 查询
     handleQuery () {
-      this.form.assignee = sessionStorage.getItem('username');
-      this.$post('/api/task/query/', this.form)
+      this.$post('/api/timeSheet/query-list/', this.form)
         .then(res => {
           if (res.status == 'SUCCESS') {
             this.tableData = res.data;
@@ -396,13 +327,6 @@ export default {
           })
       })
     },
-
-    //跳转到task详细信息页面
-    rowdblclick (row) {
-      //this.$router.push({ name: 'taskDetail', params: { taskNo: row.taskNo } })
-      this.$router.push({ path: '/task/detail', query: { taskNo: row.taskNo } });
-    },
-
 
   },
 

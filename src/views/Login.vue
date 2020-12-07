@@ -58,6 +58,8 @@ export default {
       this.$post(this.$api.userLogin, this.loginForm)
         .then(res => {
           if (res.status == 'SUCCESS') {
+            //sessionStorage
+            sessionStorage.setItem('username', res.data.userName)
             //store token
             this.setToken({ Authorization: res.data.token })
             this.$router.push({ path: '/home', querry: { redirect: router.currentRoute.fullPath } })
