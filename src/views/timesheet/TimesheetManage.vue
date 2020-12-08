@@ -136,7 +136,7 @@
     <!--显示内容 end-->
 
     <!-- 弹出编辑框 begin -->
-    <el-dialog title="编辑任务信息"
+    <el-dialog title="更新工时"
                :visible.sync="dialogFormVisible">
       <el-form :model="editForm">
         <el-form-item label="工作日期:"
@@ -171,15 +171,18 @@
         <el-form-item label="实际工时(h):"
                       :label-width="formLabelWidth">
           <el-input type="text"
-                    v-model="editForm.estimatedEffort"
+                    v-model="editForm.effort"
                     placeholder="请输入工时"
-                    auto-complete="off"></el-input>
+                    auto-complete="off"
+                    onkeyup="this.value=this.value.replace(/[^\d.]/g,'');"
+                    maxlength="8"></el-input>
+
         </el-form-item>
         <el-form-item label="备注:"
                       :label-width="formLabelWidth">
           <el-input type="textarea"
                     :rows="8"
-                    v-model="editForm.taskContent"
+                    v-model="editForm.remarks"
                     placeholder="请输入备注内容"
                     auto-complete="off"></el-input>
         </el-form-item>
@@ -235,16 +238,11 @@ export default {
       /***编辑框 begin */
       dialogFormVisible: false,
       editForm: {
-        taskNo: '',
-        taskType: '',
-        taskSubject: '',
-        taskContent: '',
-        systemName: '',
+        workDay: '',
         userName: '',
-        createdBy: '',
-        assignee: '',
-        estimatedEffort: 0,
-        actualEffort: 0
+        taskNo: '',
+        effort: 0,
+        remarks: ''
       },
       formLabelWidth: '100px',
       /***编辑框 end */
@@ -270,7 +268,7 @@ export default {
 
     // 查询
     handleQuery () {
-      this.$post('/api/timeSheet/query-list/', this.form)
+      this.$post('/api/timeSheet/query-list', this.form)
         .then(res => {
           if (res.status == 'SUCCESS') {
             this.tableData = res.data;

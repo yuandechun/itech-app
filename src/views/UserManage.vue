@@ -131,7 +131,7 @@
     <!--显示内容 end-->
 
     <!-- 弹出编辑框 begin -->
-    <el-dialog title="编辑用户信息"
+    <el-dialog title="修改用户信息"
                :visible.sync="dialogFormVisible">
       <el-form :model="editForm">
         <el-form-item label="用户名:"
@@ -214,7 +214,7 @@
       </el-form>
       <div slot="footer"
            class="dialog-footer"
-           style="text">
+           style="text;text-align: center;">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary"
                    @click="handleEditSave()">确 定</el-button>

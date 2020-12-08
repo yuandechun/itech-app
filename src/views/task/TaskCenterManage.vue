@@ -82,7 +82,7 @@
         <el-table-column fixed
                          prop="taskType"
                          label="任务类型"
-                         width="90">
+                         width="110">
         </el-table-column>
         <el-table-column fixed
                          prop="taskSubject"
@@ -341,7 +341,7 @@ export default {
 
     // 查询
     handleQuery () {
-      this.$post('/api/task/query/user-task/', this.form)
+      this.$post('/api/task/query/user-task', this.form)
         .then(res => {
           if (res.status == 'SUCCESS') {
             this.tableData = res.data;

@@ -1,4 +1,4 @@
-# web-app-vue
+# itech-app
 
 ## Project setup
 ```
