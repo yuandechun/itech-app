@@ -88,11 +88,12 @@
                         class="el-form-item-medium-width">
             <el-select v-model="form.assignee"
                        style="width:100%"
-                       placeholder="请输入任务人">
-              <el-option v-for="item in assigneeOptions"
-                         :key="item.name"
+                       placeholder="请输入任务人"
+                       filterable>
+              <el-option v-for="item in alluser"
+                         :key="item.code"
                          :label="item.name"
-                         :value="item.name">
+                         :value="item.code">
               </el-option>
             </el-select>
           </el-form-item>
@@ -117,7 +118,6 @@
 </template>
 
 <script>
-import userInfo from '@/data/user.json';
 import statusInfo from '@/data/task.json';
 
 export default {
@@ -133,8 +133,8 @@ export default {
       },
       formLabelWidth: '100px',
 
-      //assignee人员选项信息
-      assigneeOptions: userInfo.userList,
+      //用户人员选项信息
+      alluser: [],
 
       //systemName选项信息
       systemNameOptions: statusInfo.systemNameList,
@@ -149,6 +149,10 @@ export default {
   },
 
 
+  // 页面初始化数据
+  mounted: function () {
+    this.userList();
+  },
 
   methods: {
     // 新建任务
@@ -171,6 +175,20 @@ export default {
       this.form.estimatedEffort = '';
       this.form.assignee = '';
       this.form.severity = '';
+    },
+
+
+    //加载all user list
+    async userList () {
+      this.$post('/api/user/query/all', this.form)
+        .then(res => {
+          if (res.status == 'SUCCESS') {
+            res.data.forEach(element => {
+              this.alluser.push({ name: element.userName, code: element.userName });
+            })
+          }
+          this.messages = res.messages;
+        })
     },
 
   }

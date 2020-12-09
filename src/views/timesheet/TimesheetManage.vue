@@ -10,8 +10,10 @@
         <el-row :gutter="20">
           <el-col :span="6">
             <el-form-item label="工作日期:">
-              <el-date-picker v-model="form.workDate"
+              <el-date-picker v-model="form.workDay"
                               type="date"
+                              format="yyyy-MM-dd"
+                              value-format="yyyy-MM-dd"
                               placeholder="选择日期">
               </el-date-picker>
             </el-form-item>
@@ -344,7 +346,7 @@ export default {
     handleReset () {
       this.form.taskNo = '';
       this.form.taskType = '';
-      this.form.workDate = '';
+      this.form.workDay = '';
       this.form.createdDate = ''
     },
 
