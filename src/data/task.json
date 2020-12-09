@@ -46,10 +46,6 @@
       "taskValue": "CR"
     },
     {
-      "taskType": "Enhancement",
-      "taskValue": "Enhancement"
-    },
-    {
       "taskType": "Defect",
       "taskValue": "Defect"
     }

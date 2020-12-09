@@ -40,11 +40,11 @@
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="提交日期:">
-              <el-date-picker v-model="form.createdDate"
-                              type="date"
-                              placeholder="选择日期">
-              </el-date-picker>
+            <el-form-item label="系统名称:">
+              <el-input type="text"
+                        prefix-icon=""
+                        v-model="form.systemName"
+                        placeholder="请输入系统名称"></el-input>
             </el-form-item>
           </el-col>
 
@@ -57,7 +57,7 @@
                    @click="handleReset()">重置查询</el-button>
         <el-button type='primary'
                    round
-                   @click="handleAddDialog()">新增工时</el-button>
+                   @click="handleAdDialog()">新增工时</el-button>
       </el-form>
     </div>
     <!--查询框begin-->
@@ -78,16 +78,7 @@
                          label="姓名"
                          width="150">
         </el-table-column>
-        <el-table-column fixed
-                         prop="effort"
-                         label="工时"
-                         width="50">
-        </el-table-column>
-        <el-table-column fixed
-                         prop="systemName"
-                         label="系统名称"
-                         width="200">
-        </el-table-column>
+
         <el-table-column fixed
                          prop="taskNo"
                          label="任务编号"
@@ -97,6 +88,16 @@
                          prop="taskType"
                          label="任务类型"
                          width="120">
+        </el-table-column>
+        <el-table-column fixed
+                         prop="actualEffort"
+                         label="工时"
+                         width="70">
+        </el-table-column>
+        <el-table-column fixed
+                         prop="systemName"
+                         label="系统名称"
+                         width="200">
         </el-table-column>
         <el-table-column fixed
                          prop="timestamp"
@@ -135,7 +136,64 @@
     </div>
     <!--显示内容 end-->
 
-    <!-- 弹出编辑框 begin -->
+    <!-- 新增工时弹出编辑框 begin -->
+    <el-dialog title="新增工时"
+               :visible.sync="addDialogFormVisible">
+      <el-form :model="addForm">
+        <el-form-item label="工作日期:"
+                      :label-width="formLabelWidth">
+          <div style="width: 220px;margin-left:0px">
+            <el-date-picker v-model="addForm.workDay"
+                            type="date"
+                            format="yyyy-MM-dd"
+                            value-format="yyyy-MM-dd"
+                            placeholder="请选择工作日期">
+            </el-date-picker>
+          </div>
+        </el-form-item>
+        <el-form-item label="任务编号:"
+                      :label-width="formLabelWidth">
+          <el-select v-model="addForm.taskNo"
+                     style="width:100%"
+                     placeholder="请选择任务编号"
+                     filterable>
+            <el-option v-for="item in allticket"
+                       :key="item.code"
+                       :label="item.name"
+                       :value="item.code">
+            </el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="实际工时(h):"
+                      :label-width="formLabelWidth">
+          <el-input type="text"
+                    v-model="addForm.actualEffort"
+                    placeholder="请输入工时"
+                    auto-complete="off"
+                    onkeyup="this.value=this.value.replace(/[^\d.]/g,'');"
+                    maxlength="8"></el-input>
+        </el-form-item>
+        <el-form-item label="备注:"
+                      :label-width="formLabelWidth">
+          <el-input type="textarea"
+                    :rows="8"
+                    v-model="addForm.remarks"
+                    placeholder="请输入备注内容"
+                    auto-complete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer"
+           class="dialog-footer"
+           style="text;text-align: center;">
+        <el-button @click="addDialogFormVisible = false">取 消</el-button>
+        <el-button type="primary"
+                   @click="handleAddSave()">确 定</el-button>
+      </div>
+    </el-dialog>
+    <!-- 新增工时编辑框 end -->
+
+    <!-- 编辑工时弹出编辑框 begin -->
     <el-dialog title="更新工时"
                :visible.sync="dialogFormVisible">
       <el-form :model="editForm">
@@ -151,7 +209,7 @@
                       :label-width="formLabelWidth">
           <el-input type="text"
                     v-model="editForm.userName"
-                    placeholder="请选择工作日期"
+                    placeholder="请选择用户名"
                     auto-complete="off"
                     :disabled="true"></el-input>
         </el-form-item>
@@ -159,11 +217,12 @@
                       :label-width="formLabelWidth">
           <el-select v-model="editForm.taskNo"
                      style="width:100%"
-                     placeholder="请输入任务编号">
-            <el-option v-for="item in taskTypeOptions"
-                       :key="item.taskType"
-                       :label="item.taskType"
-                       :value="item.taskValue">
+                     placeholder="请输入任务编号"
+                     filterable>
+            <el-option v-for="item in allticket"
+                       :key="item.code"
+                       :label="item.name"
+                       :value="item.code">
             </el-option>
           </el-select>
         </el-form-item>
@@ -171,12 +230,11 @@
         <el-form-item label="实际工时(h):"
                       :label-width="formLabelWidth">
           <el-input type="text"
-                    v-model="editForm.effort"
+                    v-model="editForm.actualEffort"
                     placeholder="请输入工时"
                     auto-complete="off"
                     onkeyup="this.value=this.value.replace(/[^\d.]/g,'');"
                     maxlength="8"></el-input>
-
         </el-form-item>
         <el-form-item label="备注:"
                       :label-width="formLabelWidth">
@@ -195,12 +253,11 @@
                    @click="handleEditSave()">确 定</el-button>
       </div>
     </el-dialog>
-    <!-- 弹出编辑框 end -->
+    <!-- 编辑工时弹出编辑框 end -->
   </div>
 </template>
 
 <script>
-import userInfo from '@/data/user.json';
 import statusInfo from '@/data/task.json';
 
 
@@ -210,10 +267,10 @@ export default {
     return {
       messages: [],
       form: {
-        workDate: '',
+        workDay: '',
         taskNo: '',
         taskType: '',
-        createdDate: ''
+        systemName: ''
       },
 
       /*分页数据*/
@@ -222,14 +279,8 @@ export default {
       pageSize: 10, // 每页的数据条数
       tableData: [],
 
-      //任务状态选项
-      statusOptions: statusInfo.statusList,
-
-      //assignee人员选项信息
-      assigneeOptions: userInfo.userList,
-
-      //systemName选项信息
-      systemNameOptions: statusInfo.systemNameList,
+      //taskNo list
+      allticket: [],
 
       //taskType选项信息 
       taskTypeOptions: statusInfo.taskTypeList,
@@ -241,11 +292,22 @@ export default {
         workDay: '',
         userName: '',
         taskNo: '',
-        effort: 0,
+        actualEffort: 0,
         remarks: ''
       },
       formLabelWidth: '100px',
       /***编辑框 end */
+
+      /***新增编辑框 begin */
+      addDialogFormVisible: false,
+      addForm: {
+        workDay: '',
+        taskNo: '',
+        actualEffort: 0,
+        remarks: ''
+      },
+      /***新增编辑框 end */
+
 
     }
   },
@@ -253,6 +315,7 @@ export default {
   // 页面初始化数据
   mounted: function () {
     this.handleQuery();
+    this.ticketList();
   },
   methods: {
     // 设置每页显示条数
@@ -285,16 +348,40 @@ export default {
       this.form.createdDate = ''
     },
 
-    // 编辑弹框
+    // 新增工时弹框
+    handleAdDialog () {
+      //清空新增addForm数据
+      // this.addForm.workDay = '';
+      // this.addForm.taskNo = '';
+      // this.addForm.actualEffort = 0;
+      // this.addForm.remarks = '';
+      //显示新增工时弹框
+      this.addDialogFormVisible = true;
+    },
+
+    //新增工时保存
+    handleAddSave () {
+      this.$post('/api/timeSheet/save', this.addForm)
+        .then(res => {
+          if (res.status == 'SUCCESS') {
+            this.handleQuery();
+          }
+          this.addDialogFormVisible = false;
+          this.messages = res.messages;
+        })
+    },
+
+
+    // 编辑工时弹框
     handleEditDialog (indx, row) {
       this.dialogFormVisible = true;
       this.editForm = row;
     },
 
-    //编辑保存
+    //编辑工时保存
     handleEditSave () {
       this.editForm.userName = sessionStorage.getItem('username');
-      this.$patch('/api/task/update', this.editForm)
+      this.$patch('/api/timeSheet/update', this.editForm)
         .then(res => {
           if (res.status == 'SUCCESS') {
             this.handleQuery();
@@ -314,9 +401,9 @@ export default {
         center: true
       }).then(async () => {
         const delFormData = {
-          'taskNo': row.taskNo,
+          'id': row.id,
         };
-        this.$delete('/api/task/delete', delFormData)
+        this.$delete('/api/timeSheet/delete', delFormData)
           .then(res => {
             if (res.status == 'SUCCESS') {
               this.handleQuery();
@@ -324,6 +411,19 @@ export default {
             this.messages = res.messages;
           })
       })
+    },
+
+    //加载all ticket list
+    async ticketList () {
+      this.$post('/api/task/query/all', this.form)
+        .then(res => {
+          if (res.status == 'SUCCESS') {
+            res.data.forEach(element => {
+              this.allticket.push({ name: element.taskNo, code: element.taskNo });
+            })
+          }
+          this.messages = res.messages;
+        })
     },
 
   },

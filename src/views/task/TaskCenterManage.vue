@@ -82,7 +82,7 @@
         <el-table-column fixed
                          prop="taskType"
                          label="任务类型"
-                         width="110">
+                         width="100">
         </el-table-column>
         <el-table-column fixed
                          prop="taskSubject"
@@ -92,7 +92,7 @@
         <el-table-column fixed
                          prop="systemName"
                          label="系统名称"
-                         width="100">
+                         width="120">
         </el-table-column>
         <el-table-column fixed
                          prop="assignee"
@@ -165,7 +165,8 @@
                       :label-width="formLabelWidth">
           <el-select v-model="editForm.taskType"
                      style="width:100%"
-                     placeholder="请选择任务类型">
+                     placeholder="请选择任务类型"
+                     :disabled="true">
             <el-option v-for="item in taskTypeOptions"
                        :key="item.taskType"
                        :label="item.taskType"
@@ -178,7 +179,8 @@
           <el-input type="text"
                     v-model="editForm.taskSubject"
                     placeholder="请输入任务主题"
-                    auto-complete="off"></el-input>
+                    auto-complete="off"
+                    :disabled="true"></el-input>
         </el-form-item>
         <el-form-item label="任务内容:"
                       :label-width="formLabelWidth">
@@ -186,13 +188,15 @@
                     :rows="8"
                     v-model="editForm.taskContent"
                     placeholder="请输入任务内容"
-                    auto-complete="off"></el-input>
+                    auto-complete="off"
+                    :disabled="true"></el-input>
         </el-form-item>
         <el-form-item label="系统名称:"
                       :label-width="formLabelWidth">
           <el-select v-model="editForm.systemName"
                      style="width:100%"
-                     placeholder="请选择系统名称">
+                     placeholder="请选择系统名称"
+                     :disabled="true">
             <el-option v-for="item in systemNameOptions"
                        :key="item.systemName"
                        :label="item.systemName"
@@ -256,7 +260,7 @@
       </el-form>
       <div slot="footer"
            class="dialog-footer"
-           style="text">
+           style="text;text-align: center;">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary"
                    @click="handleEditSave()">确 定</el-button>

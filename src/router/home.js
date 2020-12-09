@@ -1,9 +1,9 @@
 import Home from '@/views/Home'
-import UserManage from '@/views/UserManage'
 import TaskCreated from '@/views/task/TaskCreated'
 import TaskCenterManage from '@/views/task/TaskCenterManage'
 import TaskDetail from '@/views/task/TaskDetail'
-import RealNameAuthentication from '@/views/RealName'
+import UserManage from '@/views/user/UserManage'
+import RealNameAuthentication from '@/views/user/RealName'
 import VerifyIDCard from '@/views/idcard/VerifyIDCard'
 import TimesheetManage from '@/views/timesheet/TimesheetManage'
 
