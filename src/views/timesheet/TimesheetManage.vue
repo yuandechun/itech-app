@@ -347,7 +347,7 @@ export default {
       this.form.taskNo = '';
       this.form.taskType = '';
       this.form.workDay = '';
-      this.form.createdDate = ''
+      this.form.systemName = ''
     },
 
     // 新增工时弹框
