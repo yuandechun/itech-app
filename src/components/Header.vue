@@ -54,15 +54,14 @@
       <el-menu-item @click="handleChangeLanguage('translateEn')">{{$t('nav.language.lang.en')}}</el-menu-item>
     </el-submenu>
 
-    <div class="el-menu-logout-style">
-      <el-submenu index="logout">
-        <template slot="title">
-          <i class="el-icon-s-custom"></i>
-          <span slot="title">{{showlogin}}</span>
-        </template>
-        <el-menu-item @click="handleLogout()">注销登陆</el-menu-item>
-      </el-submenu>
-    </div>
+    <el-submenu index="logout"
+                style="float: right;">
+      <template slot="title">
+        <i class="el-icon-s-custom"></i>
+        <span slot="title">{{showlogin}}</span>
+      </template>
+      <el-menu-item @click="handleLogout()">注销登陆</el-menu-item>
+    </el-submenu>
 
   </el-menu>
 </template>
@@ -101,12 +100,8 @@ export default {
 </script>
 
 <style scoped>
-.el-menu-logout-style {
-  float: right;
-  display: inline-block;
-  width: 12%;
-}
 .el-menu-style {
-  background-color: #563d7c;
+  /* background-color: #563d7c; */
+  background-color: white;
 }
 </style>

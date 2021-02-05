@@ -1,7 +1,8 @@
 var api = {
+  //用户注册
+  register: "/api/user/save",
   //用户登录
-  userLogin: "/api/user/query",
-
+  login: "/api/user/query",
 }
 
 export default api;

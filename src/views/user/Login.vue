@@ -54,7 +54,7 @@ export default {
     ...mapMutations(['setToken']),
     // 登陆
     login () {
-      this.$post(this.$api.userLogin, this.loginForm)
+      this.$post(this.$api.login, this.loginForm)
         .then(res => {
           if (res.status == 'SUCCESS') {
             //sessionStorage

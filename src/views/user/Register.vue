@@ -68,7 +68,7 @@ export default {
   methods: {
     // 注册
     register () {
-      this.$post('/api/user/save', this.registerForm)
+      this.$post(this.$api.register, this.registerForm)
         .then(res => {
           if (res.status == 'SUCCESS') {
             this.messages = res.messages;
