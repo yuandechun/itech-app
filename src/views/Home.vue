@@ -46,7 +46,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="创建日期:">
-              <el-date-picker v-model="form.insertDate"
+              <el-date-picker v-model="form.insertTime"
                               type="date"
                               placeholder="选择日期">
               </el-date-picker>
@@ -71,7 +71,7 @@
                 style="width: 100%"
                 v-on:row-dblclick="rowdblclick">
         <el-table-column fixed
-                         prop="insertDate"
+                         prop="insertTime"
                          label="时间"
                          width="95">
         </el-table-column>
@@ -285,7 +285,7 @@ export default {
         taskNo: '',
         assignee: '',
         status: '',
-        insertDate: ''
+        insertTime: ''
       },
 
       /*分页数据*/
@@ -360,7 +360,7 @@ export default {
       this.form.taskNo = '';
       this.form.assignee = '';
       this.form.status = '';
-      this.form.insertDate = ''
+      this.form.insertTime = ''
     },
 
     // 编辑弹框
